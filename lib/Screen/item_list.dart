@@ -19,7 +19,13 @@ class _ItemListState extends State<ItemList> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag_outlined)),
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.shopping_bag_outlined),
+            ),
+          ),
         ],
         backgroundColor: const Color.fromARGB(255, 30, 29, 29),
         title: Text('Products', style: TextStyle(color: Colors.white)),

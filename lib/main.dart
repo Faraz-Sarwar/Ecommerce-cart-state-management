@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_cart_app/Provider/cart_provider.dart';
 import 'package:persistent_cart_app/Screen/item_list.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:persistent_cart_app/model/product_model.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProductAdapter());
+  await Hive.openBox<Product>('cartBox');
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CartProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
