@@ -7,15 +7,25 @@ class CartProvider with ChangeNotifier {
 
   List<Product> get itemList => _cartBox.values.toList();
 
+  int get itemsInCart => itemList.length;
+
   void addItemInCart(Product product) {
-    _cartBox.add(product);
-    product.isAddedToCart = true;
-    notifyListeners();
+    final alreadyInCart = _cartBox.values.any((p) => p.name == product.name);
+    if (!alreadyInCart) {
+      _cartBox.add(product);
+      notifyListeners();
+    }
   }
 
-  void removeItemFromCart(int index) {
-    _cartBox.deleteAt(index);
-    notifyListeners();
+  void removeItemFromCart(Product product) {
+    final keyToRemove = _cartBox.keys.firstWhere(
+      (key) => _cartBox.get(key)!.name == product.name,
+      orElse: () => null,
+    );
+    if (keyToRemove != null) {
+      _cartBox.delete(keyToRemove);
+      notifyListeners();
+    }
   }
 
   void incrementItemQuanitity(int index) {
@@ -32,5 +42,17 @@ class CartProvider with ChangeNotifier {
       product.itemQuantity--;
       notifyListeners();
     }
+  }
+
+  void toggleAddToCart(Product product) {
+    product.isAddedToCart = !product.isAddedToCart;
+    final keyToUpdate = _cartBox.keys.firstWhere(
+      (key) => _cartBox.get(key)!.name == product.name,
+      orElse: () => null,
+    );
+    if (keyToUpdate != null) {
+      _cartBox.put(keyToUpdate, product);
+    }
+    notifyListeners();
   }
 }

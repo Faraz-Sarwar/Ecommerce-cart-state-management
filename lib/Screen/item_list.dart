@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_cart_app/Provider/cart_provider.dart';
+import 'package:persistent_cart_app/Screen/cart_list.dart';
 
 import '../global variables/global_variables.dart';
+import 'package:provider/provider.dart';
 
 class ItemList extends StatefulWidget {
   const ItemList({super.key});
@@ -12,6 +16,8 @@ class ItemList extends StatefulWidget {
 class _ItemListState extends State<ItemList> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CartProvider>(context);
+
     return Scaffold(
       drawer: Drawer(),
       backgroundColor: const Color.fromARGB(255, 30, 29, 29),
@@ -21,14 +27,34 @@ class _ItemListState extends State<ItemList> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 4.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.shopping_bag_outlined),
+            child: Stack(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => CartList()),
+                    );
+                  },
+                  icon: Icon(Icons.shopping_bag_outlined, size: 30),
+                ),
+                Positioned(
+                  right: 8,
+                  top: 0,
+                  child: Text(
+                    provider.itemsInCart.toString(),
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
         backgroundColor: const Color.fromARGB(255, 30, 29, 29),
-        title: Text('Products', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'Products',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -102,6 +128,9 @@ class _ItemListState extends State<ItemList> {
                                         () => item.isAddedToCart =
                                             !item.isAddedToCart,
                                       );
+                                      item.isAddedToCart
+                                          ? provider.addItemInCart(item)
+                                          : provider.removeItemFromCart(item);
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(right: 15),
