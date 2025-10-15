@@ -32,6 +32,7 @@ class CartProvider with ChangeNotifier {
     final product = _cartBox.getAt(index);
     if (product != null) {
       product.itemQuantity++;
+      _cartBox.putAt(index, product);
       notifyListeners();
     }
   }
@@ -40,6 +41,7 @@ class CartProvider with ChangeNotifier {
     final product = _cartBox.getAt(index);
     if (product != null && product.itemQuantity > 1) {
       product.itemQuantity--;
+      _cartBox.putAt(index, product);
       notifyListeners();
     }
   }

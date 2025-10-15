@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_cart_app/Provider/cart_provider.dart';
 import 'package:persistent_cart_app/Screen/cart_list.dart';
+import 'package:persistent_cart_app/model/product_model.dart';
 
 import '../global variables/global_variables.dart';
 import 'package:provider/provider.dart';
@@ -61,6 +62,9 @@ class _ItemListState extends State<ItemList> {
         children: [
           Expanded(
             child: ListView.builder(
+              physics: BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               itemCount: productList.length,
               itemBuilder: (context, index) {
                 final item = productList[index];
@@ -68,7 +72,7 @@ class _ItemListState extends State<ItemList> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Container(
                     margin: EdgeInsets.all(8),
-                    height: MediaQuery.of(context).size.height * 0.21,
+                    height: MediaQuery.of(context).size.height * 0.19,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
@@ -79,8 +83,8 @@ class _ItemListState extends State<ItemList> {
                       children: [
                         Image.asset(
                           item.imagePath,
-                          width: 130,
-                          height: 130,
+                          width: 110,
+                          height: 110,
                           fit: BoxFit.cover,
                         ),
                         SizedBox(width: 10),
